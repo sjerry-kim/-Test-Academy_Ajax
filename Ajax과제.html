@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax과제</title>
+    <style>
+        #add-btn{
+            border: 1px solid black;
+            display: flex;
+            flex-direction: row;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>메뉴 리스트 입니다</h1>
+    <h2>식당 이름</h2>
+    <p>메뉴카테고리대분류명 - 메뉴이름</p>
+    <button id="add-btn">추가</button>
+    <script>
+        const addBtn = document.querySelector("#add-btn");
+        addBtn.addEventListener("click", addMenu );
+        let count = 0;
+
+        async function addMenu(){
+            const resp = await fetch('./공공데이터.json');
+            const menuList = await resp.json();
+
+            for(let i=count; i<count+5; i++){
+                const body = document.querySelector("body");
+                const menu = document.createElement("div");
+                menu.style = "border: 1px solid black; border-radius: 10px; width: 80%; height: auto";
+                const restNM = document.createElement("h3");
+                restNM.style = "margin-bottom: 0px"
+                restNM.innerHTML = menuList.body[i].RSTR_NM;
+                const menuDiv = document.createElement("div");
+                menuDiv.style = "display: flex; flex-direction: row;"
+                const ctgry = document.createElement("p");
+                ctgry.innerHTML = menuList.body[i].MENU_CTGRY_LCLAS_NM + "-";
+                const menuNM = document.createElement("p");
+                menuNM.innerHTML = menuList.body[i].MENU_NM;
+
+                menu.append(restNM);
+                menuDiv.append(ctgry);
+                menuDiv.append(menuNM);
+                menu.append(menuDiv);
+                body.append(menu);
+
+                console.log(i);
+            }
+            count += 5;
+        }
+    </script>
+</body>
+</html>
